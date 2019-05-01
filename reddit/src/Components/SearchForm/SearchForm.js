@@ -5,14 +5,25 @@ export default class SearchForm extends React.Component {
         super(props);
 
         this.state = {};
-        // this.state.catsTitle = this.props.title.data;
+        this.state.catsTitle = this.props.reddit.data.title;
         
     }
 
+    handleChange = event => {
+        this.setState({catsTitle: event.target.value})
+    };
+
+    handleSubmit = event => {
+        event.preventDefault();
+        this.props.handleNameChange(this.props.reddit.data.title, this.state.catsTitle)
+    };
+
     render() {
         return(
-            <form>
-                <input name="catTopics"
+            <form onSubmit={this.handleSubmit}>
+                <input name="catsTitle"
+                       value={this.state.catsTitle}
+                       onChange={this.handleChange}
                        type="text"/>
                 <button type="submit"> Update</button>
             </form>

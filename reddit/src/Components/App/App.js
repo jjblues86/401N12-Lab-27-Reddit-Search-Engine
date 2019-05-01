@@ -33,12 +33,23 @@ export default class App extends React.Component {
     this.setState((previousState) => {
       return {
         reddit: previousState.reddit.map(current =>
-            current.url === updatedCats.url ? updatedCats : current
+            current.title === updatedCats.title ? updatedCats : current
         )
       }
     });
 
   };
+  handleNameChange = (oldName, newName) => {
+    this.setState((previousState) => {
+      return {
+        reddit: previousState.reddit.map(current =>
+            current.title === oldName.title ? {...current, title: newName} : current
+        )
+      }
+    });
+
+  };
+
 
   render() {
     return(
@@ -50,6 +61,7 @@ export default class App extends React.Component {
                  <SearchResultList
                      reddit = {currentTitle}
                      handleRedditUpdate = {this.handleRedditUpdate}
+                     handleNameChange = {this.handleNameChange}
                  />
                // <li>{currentTitle.data.title}</li>
              )
