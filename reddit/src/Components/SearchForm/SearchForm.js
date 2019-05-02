@@ -5,17 +5,22 @@ export default class SearchForm extends React.Component {
         super(props);
 
         this.state = {};
-        this.state.catsTitle = this.props.reddit.data.title;
-        
+        // this.state.catsTitle = [];
+        // this.state.redditCount = [];
     }
 
     handleChange = event => {
         this.setState({catsTitle: event.target.value})
     };
 
+    handleChanges = event => {
+        this.setState({redditCount: event.target.value})
+    };
+
     handleSubmit = event => {
         event.preventDefault();
-        this.props.handleNameChange(this.props.reddit.data.title, this.state.catsTitle)
+        this.props.change(this.state)
+        // this.props.handleNameChange(this.props.title, this.state.catsTitle)
     };
 
     render() {
@@ -25,6 +30,8 @@ export default class SearchForm extends React.Component {
                        value={this.state.catsTitle}
                        onChange={this.handleChange}
                        type="text"/>
+
+                <input type="number" name="redditCount" value={this.state.redditCount} onChange={this.handleChanges}/>
                 <button type="submit"> Update</button>
             </form>
         )

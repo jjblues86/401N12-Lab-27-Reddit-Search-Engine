@@ -33,11 +33,7 @@ export default class SearchResultList extends React.Component {
                    reddit.data.thumbnail ? <img src={reddit.data.thumbnail}/> : undefined
 
                 }
-                <SearchForm
-                reddit = {reddit}
-                    handleNameChange = {this.props.handleNameChange}
-                />
-
+                {/*<SearchForm />*/}
             </li>
 
         )
