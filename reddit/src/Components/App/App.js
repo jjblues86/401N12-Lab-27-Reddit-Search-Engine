@@ -9,17 +9,18 @@ export default class App extends React.Component {
     super(props);
 
     this.state = {};
-    this.state.SearchForm = [];
-    // this.state.SearchResultList = [];
+    this.state.redditTopics = [{name: 'cats', searchLimit: 10}];
+    this.state.reddit = [];
+
   }
 
-  loadRedditTopics =  (red) => {
-      console.log(red);
-    const REDDIT_API = `https://www.reddit.com/r/${red.catsTitle}.json?limit=${red.redditCount}`;
-
+  loadRedditTopics = async () => {
+    // Jerome - an async function always! returns a promise
+    const REDDIT_API = `https://www.reddit.com/r/${this.state.redditTopics[0].name}.json?limit=${this.state.redditTopics[0].searchLimit}`;
+    console.log(REDDIT_API);
     return superagent.get(REDDIT_API)
         .then(response => {
-
+            console.log(response.body);
           this.setState({
               reddit: response.body.data.children
             });
@@ -27,38 +28,46 @@ export default class App extends React.Component {
         .catch(console.error);
   };
 
-  // handleRedditUpdate = (updatedCats) => {
-  //   this.setState((previousState) => {
-  //     return {
-  //       reddit: previousState.reddit.map(current =>
-  //           current.title === updatedCats.title ? updatedCats : current
-  //       )
-  //     }
-  //   });
-  //
-  // };
+  handleRedditUpdate =  async (oldName, newName) =>  {
+      console.log(oldName);
+      console.log(newName);
+      await this.setState((previousState) => {
+          console.log(previousState);
+          return {
+              redditTopics: previousState.redditTopics.map(current => {
+                 return current.name === oldName ? {...current, name:newName} : current;
+              }),
+          }
+      });
+      await this.loadRedditTopics();
+};
 
   render() {
     const { reddit } = this.props;
 
     return(
-        <main>
-          <SearchForm change={this.loadRedditTopics}/>
-         <ul>
-           {
-             this.state.SearchForm.map((currentTitle, index) =>
-                 // Jerome - this allows us to connect with the SearchResultList file
-                 <SearchResultList
-                     // reddit = {currentTitle}
-                     // handleRedditUpdate = {this.handleRedditUpdate}
-                     // handleNameChange = {this.handleNameChange}
-                 />
 
-               // <li>{currentTitle.data.title}</li>
+        <main>
+            <h1>Search on Reddit</h1>
+           {
+             this.state.redditTopics.map((currentTopic, index) =>
+                 // Jerome - this allows us to connect with the SearchResultList file
+                 <SearchForm
+                     reddit = {currentTopic}
+                     handleRedditUpdate = {this.handleRedditUpdate}
+                 />
              )
            }
-         </ul>
-
+           <ul>
+               {
+                   this.state.reddit.map((currentList, index) =>
+                       <SearchResultList
+                           reddit = {currentList}
+                           handleNameChange = {this.handleNameChange}
+                       />
+                   )
+               }
+           </ul>
         </main>
     )
   }
