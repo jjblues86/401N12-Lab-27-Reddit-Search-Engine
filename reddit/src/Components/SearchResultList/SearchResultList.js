@@ -1,6 +1,5 @@
 import React from 'react';
 import superagent from 'superagent';
-import SearchForm from '../SearchForm/SearchForm';
 
 export default class SearchResultList extends React.Component {
 // Jerome - this part is where you get the new objects and use ... to get the old ones from App.js
@@ -33,7 +32,10 @@ export default class SearchResultList extends React.Component {
                    reddit.data.thumbnail ? <img src={reddit.data.thumbnail}/> : undefined
 
                 }
-                {/*<SearchForm />*/}
+                <br />
+                <a href={`https://reddit.com/${reddit.data.permalink}`} target="_blank">{reddit.data.title}</a>
+                <p>Ups: {reddit.data.ups}</p>
+                <p>author: {reddit.data.author}</p>
             </li>
 
         )
